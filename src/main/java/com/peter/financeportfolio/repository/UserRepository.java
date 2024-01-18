@@ -1,4 +1,9 @@
 package com.peter.financeportfolio.repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import com.peter.financeportfolio.model.User;
 
-public class UserRepository {
+
+
+public interface UserRepository extends JpaRepository<User, Long> {
+
 }
