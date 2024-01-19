@@ -1,9 +1,8 @@
 package com.peter.financeportfolio.util;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 
-public class FiancialDataUtil {
+public class FinanceDataUtil {
     private final String apiKey = "your_api_key";
 
     public String getLatestStockPrice(String symbol){
