@@ -1,0 +1,36 @@
+<!-- src/main/resources/static/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Information</title>
+</head>
+<body>
+<h1>Stock Information</h1>
+<form id="stockForm">
+    <label for="stockSymbol">Enter Stock Symbol:</label>
+    <input type="text" id="stockSymbol" name="stockSymbol" required>
+    <button type="button" onclick="getStockInfo()">Get Stock Info</button>
+</form>
+
+<div id="stockInfo"></div>
+
+<script>
+    function getStockInfo() {
+        const stockSymbol = document.getElementById("stockSymbol").value;
+        fetch(`/api/stocks/getStockInfo/${stockSymbol}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("stockInfo").innerHTML = `
+                    <p>Company Name: ${data.companyName}</p>
+                    <p>Stock Symbol: ${data.stockSymbol}</p>
+                    <p>Stock Price: ${data.stockPrice}</p>
+                `;
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
+</body>
+</html>

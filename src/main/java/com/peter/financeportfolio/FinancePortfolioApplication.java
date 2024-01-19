@@ -7,6 +7,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import javax.persistence.Entity;
 
+import java.io.IOException;
+
 @SpringBootApplication
 @EntityScan("com.peter.financeportfolio.model.*")
 @EnableJpaRepositories("com.peter.financeportfolio.repository.*")
@@ -14,6 +16,7 @@ import javax.persistence.Entity;
 public class FinancePortfolioApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(FinancePortfolioApplication.class, args);
 	}
 
