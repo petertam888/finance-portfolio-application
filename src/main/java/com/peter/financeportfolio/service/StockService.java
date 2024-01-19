@@ -1,4 +1,7 @@
 package com.peter.financeportfolio.service;
+import com.peter.financeportfolio.model.Stock;
+import com.peter.financeportfolio.repository.StockRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.jsoup.Jsoup;
@@ -11,11 +14,19 @@ import java.util.Map;
 
 @Service
 public class StockService {
+
+    private final StockRepository stockRepository;
+
+    @Autowired
+    public StockService(StockRepository stockRepository) {
+        this.stockRepository = stockRepository;
+    }
+
     public Map<String, String> fetchStockInformation(String stockSymbol){
         Map<String, String> stockInfo = new HashMap<>();
+        Stock stock = new Stock();
         try {
             String url = "http://finance.yahoo.com/quote/" + stockSymbol;
-
 
             Document document = Jsoup.connect(url).get();
 
@@ -30,6 +41,7 @@ public class StockService {
                 String companyName = companyNameDiv.text().trim();
 
                 stockInfo.put("companyName", companyName);
+                stock.setCompanyName(companyName);
 
             }
             else {
@@ -49,7 +61,9 @@ public class StockService {
 
                     stockInfo.put("stockSymbol", stockSymbol);
                     stockInfo.put("stockPrice", stockPrice);
-                    
+                    stock.setStockSymbol(stockSymbol);
+                    stock.setStockPrice(stockPrice);
+
                 } else {
                     System.out.println("Unable to find the stock price element. Check the HTML structure.");
                 }
@@ -57,6 +71,7 @@ public class StockService {
                 System.out.println("Unable to find the target div. Check the HTML structure.");
 
             }
+            stockRepository.save(stock);
 
 
         } catch (IOException e) {
@@ -64,4 +79,6 @@ public class StockService {
         }
         return stockInfo;
     }
+
+
 }

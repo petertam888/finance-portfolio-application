@@ -5,11 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import javax.persistence.Entity;
-
 import java.io.IOException;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.peter.financeportfolio")
 @EntityScan("com.peter.financeportfolio.model.*")
 @EnableJpaRepositories("com.peter.financeportfolio.repository.*")
 @ComponentScan("com.peter.financeportfolio")
