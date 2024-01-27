@@ -5,17 +5,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import java.io.IOException;
 
-@SpringBootApplication(scanBasePackages = "com.peter.financeportfolio")
-@EntityScan("com.peter.financeportfolio.model.*")
-@EnableJpaRepositories("com.peter.financeportfolio.repository.*")
-@ComponentScan("com.peter.financeportfolio")
+@SpringBootApplication
+@EntityScan("com.peter.financeportfolio.model") // Specify the base package for entities
+@EnableJpaRepositories("com.peter.financeportfolio.repository") // Specify the base package for repositories
 public class FinancePortfolioApplication {
 
 	public static void main(String[] args) {
-
 		SpringApplication.run(FinancePortfolioApplication.class, args);
 	}
-
 }
+
