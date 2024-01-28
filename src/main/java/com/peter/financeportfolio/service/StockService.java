@@ -10,6 +10,7 @@ import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -79,6 +80,16 @@ public class StockService {
         }
         return stockInfo;
     }
+
+    public List<Stock> getAllStocks(){
+        return stockRepository.getAllStocks();
+    }
+
+//    public Map<String, String> buyStock(String stockSymbol, Integer numberOfStock){
+//        return stockRepository.getAllStocks();
+//    }
+
+
 
 
 }
