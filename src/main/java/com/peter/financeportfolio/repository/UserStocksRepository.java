@@ -15,13 +15,16 @@ public class UserStocksRepository{
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<UserStocks> getAllUserStocks(){
-        String sql = "SELECT * FROM user_stocks";
+    public List<UserStocks> getAllUserStocks() {
+        String sql = "SELECT u.username, us.user_id, us.stock_code, us.stock_number FROM user_stocks us " +
+                "LEFT JOIN users u ON us.user_id = u.user_id";
+
         return jdbcTemplate.query(sql, (resultSet, rowNum) ->
                 new UserStocks(
                         resultSet.getLong("user_id"),
-                        resultSet.getLong("stock_code"),
-                        resultSet.getInt("number")
+                        resultSet.getString("stock_code"),
+                        resultSet.getInt("stock_number"),
+                        resultSet.getString("username")
                 )
         );
     }
