@@ -1,7 +1,7 @@
 package com.peter.financeportfolio.model;
 
 import jakarta.persistence.*;
-import java.time.LocalTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "user_transactions")
@@ -13,7 +13,7 @@ public class Transaction {
     private Long transactionId;
 
     @Column(name = "transaction_time")
-    private LocalTime time;
+    private LocalDate time;
 
     @Column(name = "user_id")
     private Long userId;
@@ -53,11 +53,11 @@ public class Transaction {
         this.shares = shares;
     }
 
-    public LocalTime getTime() {
+    public LocalDate getTime() {
         return time;
     }
 
-    public void setTime(LocalTime time) {
+    public void setTime(LocalDate time) {
         this.time = time;
     }
 

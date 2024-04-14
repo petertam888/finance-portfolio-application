@@ -2,17 +2,11 @@ package com.peter.financeportfolio.service;
 
 import com.peter.financeportfolio.model.Transaction;
 import com.peter.financeportfolio.repository.TransactionRepository;
-import com.sun.net.httpserver.Authenticator;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.time.LocalTime;
+import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -29,7 +23,7 @@ public class TransactionService {
         Transaction transaction = new Transaction();
         Map<String, Integer> acknowledgement = new HashMap<>();
 
-        LocalTime now = LocalTime.now();
+        LocalDate now = LocalDate.now();
 
         transaction.setTime(now);
         transaction.setUserId(userId);
@@ -45,10 +39,22 @@ public class TransactionService {
     }
 
 
+    public Map<String, Integer> addTransactionRecord(LocalDate transactionDate, Long userId, String stockCode, Float stockPrice, Integer shares){
+        Transaction transaction = new Transaction();
+        Map<String, Integer> acknowledgement = new HashMap<>();
 
-//    public Map<String, String> buyStock(String stockSymbol, Integer numberOfStock){
-//        return stockRepository.getAllStocks();
-//    }
+        transaction.setTime(transactionDate);
+        transaction.setUserId(userId);
+        transaction.setStockCode(stockCode);
+        transaction.setStockPrice(stockPrice);
+        transaction.setShares(shares);
+
+        transactionRepository.save(transaction);
+        acknowledgement.put("statusCode", 200);
+
+
+        return acknowledgement;
+    }
 
 
 

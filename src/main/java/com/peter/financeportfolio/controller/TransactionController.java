@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import java.time.LocalDate;
 
 import java.util.List;
 import java.util.Map;
@@ -47,11 +48,28 @@ public class TransactionController {
         return 500;
     }
 
-    @GetMapping("/getAllStockInfo")
-    public ResponseEntity<List<Stock>> getAllStocks(){
-        List<Stock> stocks = stockService.getAllStocks();
-        return ResponseEntity.ok(stocks);
+    @GetMapping("/{userId}/record/{year}_{month}_{day}/{stockCode}/{stockPrice}/{shares}")
+    public int addTransactionReord(@PathVariable Long userId,
+                                   @PathVariable Integer year,
+                                   @PathVariable Integer month,
+                                   @PathVariable Integer day,
+                                   @PathVariable String stockCode,
+                                   @PathVariable Float stockPrice,
+                                   @PathVariable Integer shares) {
+
+        LocalDate date = LocalDate.of(year, month, day);
+
+        Map<String, Integer> acknowledgement = transactionService.addTransactionRecord((date), (userId), (stockCode), (stockPrice), (shares));
+
+        if (acknowledgement.get("statusCode") == 200){
+            return 200;
+        }
+
+
+        return 500;
     }
+
+
 
 //    @GetMapping("/buyStock/{stockSymbol}/{numberOfStock}")
 //    public ResponseEntity<Map<String, String>> buyStock(@PathVariable String stockSymbol, @PathVariable Integer numberOfStock){
