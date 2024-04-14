@@ -23,11 +23,10 @@ public class StockService {
         this.stockRepository = stockRepository;
     }
 
-    public Map<String, String> fetchStockInformation(String stockSymbol){
-        Map<String, String> stockInfo = new HashMap<>();
-        Stock stock = new Stock();
+    public Map<String, Object> fetchStockInformation(String stockCode){
+        Map<String, Object> stockInfo = new HashMap<>();
         try {
-            String url = "http://finance.yahoo.com/quote/" + stockSymbol;
+            String url = "http://finance.yahoo.com/quote/" + stockCode;
 
             Document document = Jsoup.connect(url).get();
 
@@ -42,7 +41,6 @@ public class StockService {
                 String companyName = companyNameDiv.text().trim();
 
                 stockInfo.put("companyName", companyName);
-                stock.setCompanyName(companyName);
 
             }
             else {
@@ -50,20 +48,20 @@ public class StockService {
 
             }
 
-            Element symbolAndStockPriceDiv = document.select("div.D\\(ib\\).Mend\\(20px\\)").first();
+            Element codeAndStockPriceDiv = document.select("div.D\\(ib\\).Mend\\(20px\\)").first();
 
-            if (symbolAndStockPriceDiv != null) {
+            if (codeAndStockPriceDiv != null) {
                 // Extract the stock price from the fin-streamer element
-                Element stockPriceElement = symbolAndStockPriceDiv.select("fin-streamer[data-field=regularMarketPrice]").first();
+                Element stockPriceElement = codeAndStockPriceDiv.select("fin-streamer[data-field=regularMarketPrice]").first();
 
                 if (stockPriceElement != null) {
                     // Get the text content from the stock price element
-                    String stockPrice = stockPriceElement.text().trim();
+                    String stock_price = stockPriceElement.text().trim();
+                    Float stockPrice = Float.valueOf(stock_price);
 
-                    stockInfo.put("stockSymbol", stockSymbol);
+                    stockInfo.put("stockCode", stockCode);
                     stockInfo.put("stockPrice", stockPrice);
-                    stock.setStockSymbol(stockSymbol);
-                    stock.setStockPrice(stockPrice);
+
 
                 } else {
                     System.out.println("Unable to find the stock price element. Check the HTML structure.");
@@ -72,7 +70,6 @@ public class StockService {
                 System.out.println("Unable to find the target div. Check the HTML structure.");
 
             }
-            stockRepository.save(stock);
 
 
         } catch (IOException e) {

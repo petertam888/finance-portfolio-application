@@ -2,6 +2,7 @@ package com.peter.financeportfolio.controller;
 
 import com.peter.financeportfolio.model.Stock;
 import com.peter.financeportfolio.service.StockService;
+import com.peter.financeportfolio.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,27 +14,37 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/stocks")
-public class StockController {
+@RequestMapping("/api/transaction")
+public class TransactionController {
+    private final TransactionService transactionService;
     private final StockService stockService;
 
 
     @Autowired
-    public StockController(StockService stockService) {
+    public TransactionController(TransactionService transactionService, StockService stockService) {
+        this.transactionService = transactionService;
         this.stockService = stockService;
     }
 
-
-    @GetMapping("/addStockInfo/{stockSymbol}")
-    public ResponseEntity<Map<String, Object>> addStockInfo(@PathVariable String stockCode) {
+    @GetMapping("/{userId}/buy/{stockCode}/{shares}")
+    public int buyStock(@PathVariable Long userId,
+                        @PathVariable String stockCode,
+                        @PathVariable Integer shares) {
 
         Map<String, Object> stockInfo = stockService.fetchStockInformation((stockCode));
 
-        if (stockInfo.isEmpty()) {
-            return ResponseEntity.notFound().build();
+        Object stockCurrentPrice = stockInfo.get("stockPrice");
+        Float stockPrice = Float.parseFloat((stockCurrentPrice.toString()));
+
+        Map<String, Integer> acknowledgement = transactionService.buyStocksWithCurrentPrice((userId), (stockCode),
+                (stockPrice), (shares));
+
+        if (acknowledgement.get("statusCode") == 200){
+            return 200;
         }
 
-        return ResponseEntity.ok(stockInfo);
+
+        return 500;
     }
 
     @GetMapping("/getAllStockInfo")

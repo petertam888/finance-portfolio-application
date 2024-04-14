@@ -22,9 +22,9 @@ public class UserStocksRepository{
         return jdbcTemplate.query(sql, (resultSet, rowNum) ->
                 new UserStocks(
                         resultSet.getLong("user_id"),
+                        resultSet.getString("username"),
                         resultSet.getString("stock_code"),
-                        resultSet.getInt("stock_number"),
-                        resultSet.getString("username")
+                        resultSet.getInt("stock_number")
                 )
         );
     }

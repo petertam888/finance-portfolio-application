@@ -11,14 +11,14 @@ public class Stock {
     @Column(name = "stock_id")
     private Long stockId;
 
-    @Column(name = "stock_symbol")
-    private String stockSymbol;
+    @Column(name = "stock_code")
+    private String stockCode;
 
     @Column(name = "company_name")
     private String companyName;
 
     @Column(name = "stock_price")
-    private String stockPrice;
+    private Float stockPrice;
 
     // Getters and setters
 
@@ -30,12 +30,12 @@ public class Stock {
         this.stockId = stockId;
     }
 
-    public String getStockSymbol() {
-        return stockSymbol;
+    public String getStockCode() {
+        return stockCode;
     }
 
-    public void setStockSymbol(String stockSymbol) {
-        this.stockSymbol = stockSymbol;
+    public void setStockCode(String stockCode) {
+        this.stockCode = stockCode;
     }
 
     public String getCompanyName() {
@@ -46,11 +46,11 @@ public class Stock {
         this.companyName = companyName;
     }
 
-    public String getStockPrice() {
+    public Float getStockPrice() {
         return stockPrice;
     }
 
-    public void setStockPrice(String stockPrice) {
+    public void setStockPrice(Float stockPrice) {
         this.stockPrice = stockPrice;
     }
 }
