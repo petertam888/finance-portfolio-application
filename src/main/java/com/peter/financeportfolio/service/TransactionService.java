@@ -1,22 +1,28 @@
 package com.peter.financeportfolio.service;
 
 import com.peter.financeportfolio.model.Transaction;
+import com.peter.financeportfolio.model.UserStockCode;
+import com.peter.financeportfolio.model.UserStocks;
 import com.peter.financeportfolio.repository.TransactionRepository;
+import com.peter.financeportfolio.repository.UserStocksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class TransactionService {
 
     private final TransactionRepository transactionRepository;
+    private final UserStocksRepository userStocksRepository;
 
     @Autowired
-    public TransactionService(TransactionRepository transactionRepository) {
+    public TransactionService(TransactionRepository transactionRepository, UserStocksRepository userStocksRepository) {
         this.transactionRepository = transactionRepository;
+        this.userStocksRepository = userStocksRepository;
     }
 
     public Map<String, Integer> buyStocksWithCurrentPrice(Long userId, String stockCode, Float stockPrice, Integer shares){
@@ -32,6 +38,24 @@ public class TransactionService {
         transaction.setShares(shares);
 
         transactionRepository.save(transaction);
+
+        Optional<UserStocks> userStocksOptional = userStocksRepository.getUserStockByUserIdAndStockCode(userId, stockCode);
+        if (userStocksOptional.isPresent()){
+            UserStocks stock = userStocksOptional.get();
+            Float totalCost = stock.getCost()*stock.getShares();
+            Float transactionCost = stockPrice*shares;
+            Float updatedCost = (totalCost+transactionCost)/(shares+stock.getShares());
+            userStocksRepository.updateUserStockByUserIdAndStockCode(userId, updatedCost, stock.getShares()+shares, stockCode);
+        }else{
+            UserStocks userStocks = new UserStocks();
+            UserStockCode userStockCode = new UserStockCode();
+            userStockCode.setUserId(userId);
+            userStockCode.setStockCode(stockCode);
+            userStocks.setUser_stock_code(userStockCode);
+            userStocks.setCost(stockPrice);
+            userStocks.setShares(shares);
+            userStocksRepository.save(userStocks);
+        }
         acknowledgement.put("statusCode", 200);
 
 
@@ -50,6 +74,23 @@ public class TransactionService {
         transaction.setShares(shares);
 
         transactionRepository.save(transaction);
+        Optional<UserStocks> userStocksOptional = userStocksRepository.getUserStockByUserIdAndStockCode(userId, stockCode);
+        if (userStocksOptional.isPresent()){
+            UserStocks stock = userStocksOptional.get();
+            Float totalCost = stock.getCost()*stock.getShares();
+            Float transactionCost = stockPrice*shares;
+            Float updatedCost = (totalCost+transactionCost)/(shares+stock.getShares());
+            userStocksRepository.updateUserStockByUserIdAndStockCode(userId, updatedCost, stock.getShares()+shares, stockCode);
+        }else{
+            UserStocks userStocks = new UserStocks();
+            UserStockCode userStockCode = new UserStockCode();
+            userStockCode.setUserId(userId);
+            userStockCode.setStockCode(stockCode);
+            userStocks.setUser_stock_code(userStockCode);
+            userStocks.setCost(stockPrice);
+            userStocks.setShares(shares);
+            userStocksRepository.save(userStocks);
+        }
         acknowledgement.put("statusCode", 200);
 
 
