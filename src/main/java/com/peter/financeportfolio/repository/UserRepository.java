@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<UserDeposit, Long> {
     @Query(value = "SELECT user_id, deposit FROM user_deposit WHERE user_id = :userId", nativeQuery = true)
-    Optional<UserDeposit> getUserDepositByUserId(@Param("userId") Long userId);
+    UserDeposit getUserDepositByUserId(@Param("userId") Long userId);
 
     @Transactional
     @Modifying

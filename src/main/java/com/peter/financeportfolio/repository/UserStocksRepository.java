@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -19,4 +20,7 @@ public interface UserStocksRepository extends JpaRepository<UserStocks, Long> {
     @Modifying
     @Query(value = "UPDATE user_stocks SET cost = :newCost, shares = :newShares WHERE user_id = :userId and stock_code = :stockCode", nativeQuery = true)
     void updateUserStockByUserIdAndStockCode(@Param("userId") Long userId, @Param("newCost") Float newCost, @Param("newShares") Integer newShares, @Param("stockCode") String stockCode);
+
+    @Query(value = "SELECT * FROM user_stocks WHERE user_id = :userId", nativeQuery = true)
+    List<UserStocks> getUserStockByUserId(@Param("userId") Long userId);
 }

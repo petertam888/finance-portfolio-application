@@ -1,5 +1,6 @@
 package com.peter.financeportfolio.controller;
 
+import com.peter.financeportfolio.dto.UserBriefPortfolioDTO;
 import com.peter.financeportfolio.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +12,7 @@ import java.time.LocalDate;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/user")
 public class UserController {
     private final UserService userService;
 
@@ -32,6 +33,17 @@ public class UserController {
 
 
         return 500;
+    }
+
+    @GetMapping("/{userId}/portfolio")
+    public UserBriefPortfolioDTO checkUserBriefPortfolio(@PathVariable Long userId) {
+
+
+        UserBriefPortfolioDTO userInfo = userService.getUserBriefPortfolio((userId));
+
+
+
+        return userInfo;
     }
 
 }

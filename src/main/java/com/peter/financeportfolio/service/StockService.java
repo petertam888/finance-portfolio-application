@@ -1,6 +1,8 @@
 package com.peter.financeportfolio.service;
+import com.fasterxml.jackson.databind.JsonSerializer;
 import com.peter.financeportfolio.model.Stock;
 import com.peter.financeportfolio.repository.StockRepository;
+import com.peter.financeportfolio.dto.FetchedStockInfoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +25,11 @@ public class StockService {
         this.stockRepository = stockRepository;
     }
 
-    public Map<String, Object> fetchStockInformation(String stockCode){
-        Map<String, Object> stockInfo = new HashMap<>();
+    public FetchedStockInfoDTO fetchStockInformation(String stockCode){
         try {
             String url = "http://finance.yahoo.com/quote/" + stockCode;
 
             Document document = Jsoup.connect(url).get();
-
 
 //            Element companyNameDiv = document.select("div.D(ib) h1.Fz\\(18px\\)").first();
             // in html file, the http content is: <h1 class="D(ib) Fz(18px)">{Apple Inc. (AAPL)}</h1>
@@ -40,7 +40,29 @@ public class StockService {
                 // Get the text content from the stock price elementg
                 String companyName = companyNameDiv.text().trim();
 
-                stockInfo.put("companyName", companyName);
+                Element codeAndStockPriceDiv = document.select("div.D\\(ib\\).Mend\\(20px\\)").first();
+
+                if (codeAndStockPriceDiv != null) {
+                    // Extract the stock price from the fin-streamer element
+                    Element stockPriceElement = codeAndStockPriceDiv.select("fin-streamer[data-field=regularMarketPrice]").first();
+
+                    if (stockPriceElement != null) {
+                        // Get the text content from the stock price element
+                        String stock_price = stockPriceElement.text().trim();
+                        Float stockPrice = Float.valueOf(stock_price);
+
+                        FetchedStockInfoDTO stockInfo = new FetchedStockInfoDTO(companyName, stockCode, stockPrice);
+
+                        return stockInfo;
+
+
+                    } else {
+                        System.out.println("Unable to find the stock price element. Check the HTML structure.");
+                    }
+                } else {
+                    System.out.println("Unable to find the target div. Check the HTML structure.");
+
+                }
 
             }
             else {
@@ -48,43 +70,15 @@ public class StockService {
 
             }
 
-            Element codeAndStockPriceDiv = document.select("div.D\\(ib\\).Mend\\(20px\\)").first();
-
-            if (codeAndStockPriceDiv != null) {
-                // Extract the stock price from the fin-streamer element
-                Element stockPriceElement = codeAndStockPriceDiv.select("fin-streamer[data-field=regularMarketPrice]").first();
-
-                if (stockPriceElement != null) {
-                    // Get the text content from the stock price element
-                    String stock_price = stockPriceElement.text().trim();
-                    Float stockPrice = Float.valueOf(stock_price);
-
-                    stockInfo.put("stockCode", stockCode);
-                    stockInfo.put("stockPrice", stockPrice);
-
-
-                } else {
-                    System.out.println("Unable to find the stock price element. Check the HTML structure.");
-                }
-            } else {
-                System.out.println("Unable to find the target div. Check the HTML structure.");
-
-            }
-
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return stockInfo;
+        return null;
+
     }
 
-    public List<Stock> getAllStocks(){
-        return stockRepository.getAllStocks();
-    }
 
-//    public Map<String, String> buyStock(String stockSymbol, Integer numberOfStock){
-//        return stockRepository.getAllStocks();
-//    }
 
 
 

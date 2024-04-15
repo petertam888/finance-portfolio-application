@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.peter.financeportfolio.dto.FetchedStockInfoDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -23,24 +24,14 @@ public class StockController {
         this.stockService = stockService;
     }
 
-
     @GetMapping("/addStockInfo/{stockSymbol}")
-    public ResponseEntity<Map<String, Object>> addStockInfo(@PathVariable String stockCode) {
+    public FetchedStockInfoDTO addStockInfo(@PathVariable String stockCode) {
 
-        Map<String, Object> stockInfo = stockService.fetchStockInformation((stockCode));
+        FetchedStockInfoDTO stockInfo = stockService.fetchStockInformation((stockCode));
 
-        if (stockInfo.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(stockInfo);
+        return stockInfo;
     }
 
-    @GetMapping("/getAllStockInfo")
-    public ResponseEntity<List<Stock>> getAllStocks(){
-        List<Stock> stocks = stockService.getAllStocks();
-        return ResponseEntity.ok(stocks);
-    }
 
 //    @GetMapping("/buyStock/{stockSymbol}/{numberOfStock}")
 //    public ResponseEntity<Map<String, String>> buyStock(@PathVariable String stockSymbol, @PathVariable Integer numberOfStock){

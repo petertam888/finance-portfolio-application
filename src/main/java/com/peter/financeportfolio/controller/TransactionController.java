@@ -1,10 +1,9 @@
 package com.peter.financeportfolio.controller;
 
-import com.peter.financeportfolio.model.Stock;
 import com.peter.financeportfolio.service.StockService;
+import com.peter.financeportfolio.dto.FetchedStockInfoDTO;
 import com.peter.financeportfolio.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,9 +31,9 @@ public class TransactionController {
                         @PathVariable String stockCode,
                         @PathVariable Integer shares) {
 
-        Map<String, Object> stockInfo = stockService.fetchStockInformation((stockCode));
+        FetchedStockInfoDTO stockInfo = stockService.fetchStockInformation((stockCode));
 
-        Object stockCurrentPrice = stockInfo.get("stockPrice");
+        Object stockCurrentPrice = stockInfo.getStockPrice();
         Float stockPrice = Float.parseFloat((stockCurrentPrice.toString()));
 
         Map<String, Integer> acknowledgement = transactionService.buyStocksWithCurrentPrice((userId), (stockCode),
