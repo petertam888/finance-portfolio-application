@@ -23,7 +23,6 @@ public class TransactionService {
     public TransactionService(TransactionRepository transactionRepository, UserStocksRepository userStocksRepository) {
         this.transactionRepository = transactionRepository;
         this.userStocksRepository = userStocksRepository;
-        Syste
     }
 
     public Map<String, Integer> buyStocksWithCurrentPrice(Long userId, String stockCode, Float stockPrice, Integer shares){
