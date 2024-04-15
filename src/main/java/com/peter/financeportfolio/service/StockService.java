@@ -33,35 +33,29 @@ public class StockService {
 
 //            Element companyNameDiv = document.select("div.D(ib) h1.Fz\\(18px\\)").first();
             // in html file, the http content is: <h1 class="D(ib) Fz(18px)">{Apple Inc. (AAPL)}</h1>
-            Element companyNameDiv = document.select("h1.D\\(ib\\).Fz\\(18px\\)").first();
+            Element companyNameDiv = document.select("#nimbus-app > section > section > section > article > section.container.svelte-okyrr7 > div.top.svelte-okyrr7 > div > section > h1").first();
 
             if (companyNameDiv != null) {
 
                 // Get the text content from the stock price elementg
                 String companyName = companyNameDiv.text().trim();
 
-                Element codeAndStockPriceDiv = document.select("div.D\\(ib\\).Mend\\(20px\\)").first();
 
-                if (codeAndStockPriceDiv != null) {
-                    // Extract the stock price from the fin-streamer element
-                    Element stockPriceElement = codeAndStockPriceDiv.select("fin-streamer[data-field=regularMarketPrice]").first();
+                // Extract the stock price from the fin-streamer element
+                Element stockPriceElement = document.select("#nimbus-app > section > section > section > article > section.container.svelte-okyrr7 > div.bottom.svelte-okyrr7 > div.price.svelte-okyrr7 > section > div > section:nth-child(1) > div.container.svelte-mgkamr > fin-streamer.livePrice.svelte-mgkamr > span").first();
 
-                    if (stockPriceElement != null) {
-                        // Get the text content from the stock price element
-                        String stock_price = stockPriceElement.text().trim();
-                        Float stockPrice = Float.valueOf(stock_price);
+                if (stockPriceElement != null) {
+                    // Get the text content from the stock price element
+                    String stock_price = stockPriceElement.text().trim();
+                    Float stockPrice = Float.valueOf(stock_price);
 
-                        FetchedStockInfoDTO stockInfo = new FetchedStockInfoDTO(companyName, stockCode, stockPrice);
+                    FetchedStockInfoDTO stockInfo = new FetchedStockInfoDTO(companyName, stockCode, stockPrice);
 
-                        return stockInfo;
+                    return stockInfo;
 
 
-                    } else {
-                        System.out.println("Unable to find the stock price element. Check the HTML structure.");
-                    }
                 } else {
-                    System.out.println("Unable to find the target div. Check the HTML structure.");
-
+                    System.out.println("Unable to find the stock price element. Check the HTML structure.");
                 }
 
             }

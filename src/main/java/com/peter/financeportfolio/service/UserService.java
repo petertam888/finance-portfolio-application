@@ -60,7 +60,6 @@ public class UserService {
         for (UserStocks userStocks : UserStocksList) {
             UserStockCode UserStockCode = userStocks.getUser_stock_code();
             String stockCode = UserStockCode.getStockCode();
-            System.out.print(stockCode);
             FetchedStockInfoDTO stockInfo = stockService.fetchStockInformation(stockCode);
             Float CurrentStockPrice = stockInfo.getStockPrice();
             CurrentStockAmount += userStocks.getShares()*CurrentStockPrice;
