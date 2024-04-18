@@ -33,7 +33,8 @@ public class StockService {
 
 //            Element companyNameDiv = document.select("div.D(ib) h1.Fz\\(18px\\)").first();
             // in html file, the http content is: <h1 class="D(ib) Fz(18px)">{Apple Inc. (AAPL)}</h1>
-            Element companyNameDiv = document.select("#nimbus-app > section > section > section > article > section.container.svelte-okyrr7 > div.top.svelte-okyrr7 > div > section > h1").first();
+            Element companyNameDiv = document.select("#nimbus-app > section > section > section > article > section.container.svelte-1wa6nl7 > div.top.svelte-1wa6nl7 > div > section > h1").first();
+
 
             if (companyNameDiv != null) {
 
@@ -42,7 +43,7 @@ public class StockService {
 
 
                 // Extract the stock price from the fin-streamer element
-                Element stockPriceElement = document.select("#nimbus-app > section > section > section > article > section.container.svelte-okyrr7 > div.bottom.svelte-okyrr7 > div.price.svelte-okyrr7 > section > div > section:nth-child(1) > div.container.svelte-mgkamr > fin-streamer.livePrice.svelte-mgkamr > span").first();
+                Element stockPriceElement = document.select("#nimbus-app > section > section > section > article > section.container.svelte-1wa6nl7 > div.bottom.svelte-1wa6nl7 > div.price.svelte-1wa6nl7 > section > div > section:nth-child(1) > div.container.svelte-mgkamr > fin-streamer.livePrice.svelte-mgkamr > span").first();
 
                 if (stockPriceElement != null) {
                     // Get the text content from the stock price element

@@ -1,5 +1,6 @@
 package com.peter.financeportfolio.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.peter.financeportfolio.dto.UserBriefPortfolioDTO;
 import com.peter.financeportfolio.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +9,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 import java.time.LocalDate;
 import java.util.Map;
 
 @RestController
+@CrossOrigin(origins = "*") // Allow requests from all origins
 @RequestMapping("/api/user")
 public class UserController {
     private final UserService userService;
@@ -36,13 +43,18 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/portfolio")
-    public UserBriefPortfolioDTO checkUserBriefPortfolio(@PathVariable Long userId) {
+    public UserBriefPortfolioDTO checkUserBriefPortfolio(@PathVariable Long userId) throws JsonProcessingException {
 
 
         UserBriefPortfolioDTO userInfo = userService.getUserBriefPortfolio((userId));
 
 
 
+//        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+//        String json = ow.writeValueAsString(userInfo);
+
+        System.out.println("passed");
+//        System.out.println(json);
         return userInfo;
     }
 
