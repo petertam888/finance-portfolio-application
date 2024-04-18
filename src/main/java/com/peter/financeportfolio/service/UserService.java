@@ -63,7 +63,7 @@ public class UserService {
             FetchedStockInfoDTO stockInfo = stockService.fetchStockInformation(stockCode);
             Float CurrentStockPrice = stockInfo.getStockPrice();
             CurrentStockAmount += userStocks.getShares()*CurrentStockPrice;
-            UserStockInfoDTO userStockInfo = new UserStockInfoDTO(stockCode, userStocks.getShares());
+            UserStockInfoDTO userStockInfo = new UserStockInfoDTO(stockCode, userStocks.getShares(), CurrentStockPrice);
             StockInfoList.add(userStockInfo);
         }
 

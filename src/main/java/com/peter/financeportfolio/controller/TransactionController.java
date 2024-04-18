@@ -4,16 +4,15 @@ import com.peter.financeportfolio.service.StockService;
 import com.peter.financeportfolio.dto.FetchedStockInfoDTO;
 import com.peter.financeportfolio.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDate;
 
 import java.util.List;
 import java.util.Map;
 
 @RestController
+@CrossOrigin(origins = "*") // Allow requests from all origins
 @RequestMapping("/api/transaction")
 public class TransactionController {
     private final TransactionService transactionService;

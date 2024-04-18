@@ -4,7 +4,7 @@ import com.peter.financeportfolio.model.UserStocks;
 
 public class UserStockInfoDTO {
     private String stockCode;
-//    private Float stockPrice;
+    private Float stockPrice;
 //
 //    private String companyName;
 
@@ -18,8 +18,9 @@ public class UserStockInfoDTO {
 //
 //    }
 
-    public UserStockInfoDTO(String stockCode, Integer shares){
+    public UserStockInfoDTO(String stockCode, Integer shares, Float stockPrice){
         this.stockCode = stockCode;
+        this.stockPrice = stockPrice;
         this.shares = shares;
 
     }
@@ -54,5 +55,13 @@ public class UserStockInfoDTO {
 
     public void setShares(Integer shares) {
         this.shares = shares;
+    }
+
+    public Float getStockPrice() {
+        return stockPrice;
+    }
+
+    public void setStockPrice(Float stockPrice) {
+        this.stockPrice = stockPrice;
     }
 }
