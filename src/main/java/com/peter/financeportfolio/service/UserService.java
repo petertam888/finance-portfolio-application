@@ -1,5 +1,7 @@
 package com.peter.financeportfolio.service;
-import com.peter.financeportfolio.service.StockService;
+import com.peter.financeportfolio.model.Transaction;
+import com.peter.financeportfolio.repository.TransactionRepository;
+import com.peter.financeportfolio.repository.UserTransactionRepository;
 import com.peter.financeportfolio.dto.FetchedStockInfoDTO;
 import com.peter.financeportfolio.dto.UserBriefPortfolioDTO;
 import com.peter.financeportfolio.dto.UserStockInfoDTO;
@@ -20,12 +22,15 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserStocksRepository userStocksRepository;
 
+    private final UserTransactionRepository userTransactionRepository;
+
     private final StockService stockService;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserStocksRepository userStocksRepository, StockService stockService) {
+    public UserService(UserRepository userRepository, UserStocksRepository userStocksRepository, UserTransactionRepository userTransactionRepository , StockService stockService) {
         this.userRepository = userRepository;
         this.userStocksRepository = userStocksRepository;
+        this.userTransactionRepository = userTransactionRepository;
         this.stockService = stockService;
     }
 
@@ -69,12 +74,27 @@ public class UserService {
 
         UserDeposit userDeposit = userRepository.getUserDepositByUserId(userId);
         Float cash = userDeposit.getDeposit();
-        Float CurrentAccountAmount = cash + CurrentStockAmount;
+        if (cash != null) {
+            Float CurrentAccountAmount = cash + CurrentStockAmount;
+        }
+        else
+            cash = 0.0f;
+            Float CurrentAccountAmount = cash + CurrentStockAmount;
 
         UserBriefPortfolioDTO userBriefPortfolio = new UserBriefPortfolioDTO(StockInfoList, CurrentAccountAmount, cash);
 
 
 
         return userBriefPortfolio;
+    }
+
+    public List<Transaction> getUserTransactionRecords(Long userId){
+
+        List<Transaction> UserTransactionRecords = userTransactionRepository.getUserTransactionRecordsByUserId(userId);
+
+
+
+
+        return UserTransactionRecords;
     }
 }

@@ -4,6 +4,7 @@ import com.peter.financeportfolio.model.Transaction;
 import com.peter.financeportfolio.model.UserStockCode;
 import com.peter.financeportfolio.model.UserStocks;
 import com.peter.financeportfolio.repository.TransactionRepository;
+import com.peter.financeportfolio.repository.UserRepository;
 import com.peter.financeportfolio.repository.UserStocksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,11 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final UserStocksRepository userStocksRepository;
 
+    private final UserRepository userRepository;
+
     @Autowired
-    public TransactionService(TransactionRepository transactionRepository, UserStocksRepository userStocksRepository) {
+    public TransactionService(TransactionRepository transactionRepository, UserStocksRepository userStocksRepository, UserRepository userRepository) {
+        this.userRepository = userRepository;
         this.transactionRepository = transactionRepository;
         this.userStocksRepository = userStocksRepository;
     }
@@ -81,6 +85,8 @@ public class TransactionService {
             Float transactionCost = stockPrice*shares;
             Float updatedCost = (totalCost+transactionCost)/(shares+stock.getShares());
             userStocksRepository.updateUserStockByUserIdAndStockCode(userId, updatedCost, stock.getShares()+shares, stockCode);
+            userRepository.updateUserDepositByUserIdAndTransactionCost(userId, transactionCost);
+
         }else{
             UserStocks userStocks = new UserStocks();
             UserStockCode userStockCode = new UserStockCode();
@@ -90,6 +96,7 @@ public class TransactionService {
             userStocks.setCost(stockPrice);
             userStocks.setShares(shares);
             userStocksRepository.save(userStocks);
+            userRepository.updateUserDepositByUserIdAndTransactionCost(userId, (stockPrice*shares));
         }
         acknowledgement.put("statusCode", 200);
 

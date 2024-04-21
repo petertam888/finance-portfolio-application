@@ -18,5 +18,10 @@ public interface UserRepository extends JpaRepository<UserDeposit, Long> {
     @Query(value = "UPDATE user_deposit SET deposit = :newDeposit WHERE user_id = :userId", nativeQuery = true)
     void updateUserDepositByUserId(@Param("userId") Long userId, @Param("newDeposit") Float newDeposit);
 
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE user_deposit SET deposit = (deposit - :transactionCost) WHERE user_id = :userId", nativeQuery = true)
+    void updateUserDepositByUserIdAndTransactionCost(@Param("userId") Long userId, @Param("transactionCost") Float transactionCost);
+
 
 }

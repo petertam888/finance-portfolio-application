@@ -2,6 +2,7 @@ package com.peter.financeportfolio.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.peter.financeportfolio.dto.UserBriefPortfolioDTO;
+import com.peter.financeportfolio.model.Transaction;
 import com.peter.financeportfolio.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -49,13 +51,28 @@ public class UserController {
         UserBriefPortfolioDTO userInfo = userService.getUserBriefPortfolio((userId));
 
 
-
 //        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 //        String json = ow.writeValueAsString(userInfo);
 
         System.out.println("passed");
 //        System.out.println(json);
         return userInfo;
+    }
+
+    @GetMapping("/{userId}/transaction_records")
+    public List<Transaction> checkUserTransactionRecords(@PathVariable Long userId) throws JsonProcessingException {
+
+
+        List<Transaction> userTransactionRecords = userService.getUserTransactionRecords((userId));
+
+
+
+//        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+//        String json = ow.writeValueAsString(userInfo);
+        System.out.println(userTransactionRecords);
+        System.out.println("passed");
+//        System.out.println(json);
+        return userTransactionRecords;
     }
 
 }
