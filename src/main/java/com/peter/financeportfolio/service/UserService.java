@@ -1,16 +1,14 @@
 package com.peter.financeportfolio.service;
 import com.peter.financeportfolio.model.Transaction;
-import com.peter.financeportfolio.repository.TransactionRepository;
-import com.peter.financeportfolio.repository.UserTransactionRepository;
+import com.peter.financeportfolio.repository.*;
 import com.peter.financeportfolio.dto.FetchedStockInfoDTO;
 import com.peter.financeportfolio.dto.UserBriefPortfolioDTO;
 import com.peter.financeportfolio.dto.UserStockInfoDTO;
 import com.peter.financeportfolio.model.UserDeposit;
 import com.peter.financeportfolio.model.UserStockCode;
 import com.peter.financeportfolio.model.UserStocks;
-import com.peter.financeportfolio.repository.UserStocksRepository;
+import com.peter.financeportfolio.model.UserDepositTransactions;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.peter.financeportfolio.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -24,11 +22,14 @@ public class UserService {
 
     private final UserTransactionRepository userTransactionRepository;
 
+    private final UserDepositTransactionsRepository userDepositTransactionsRepository;
+
     private final StockService stockService;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserStocksRepository userStocksRepository, UserTransactionRepository userTransactionRepository , StockService stockService) {
+    public UserService(UserRepository userRepository, UserStocksRepository userStocksRepository, UserTransactionRepository userTransactionRepository , UserDepositTransactionsRepository userDepositTransactionsRepository,StockService stockService) {
         this.userRepository = userRepository;
+        this.userDepositTransactionsRepository = userDepositTransactionsRepository;
         this.userStocksRepository = userStocksRepository;
         this.userTransactionRepository = userTransactionRepository;
         this.stockService = stockService;
@@ -42,11 +43,23 @@ public class UserService {
         if (userDepositOptional != null) {
             Float userLatestDeposit =  cashAmount + userDepositOptional.getDeposit();
             userRepository.updateUserDepositByUserId(userId, userLatestDeposit);
+            UserDepositTransactions userDepositTransaction = new UserDepositTransactions();
+            LocalDate date = LocalDate.now();
+            userDepositTransaction.setTransaction_time(date);
+            userDepositTransaction.setAmount(cashAmount);
+            userDepositTransaction.setUser_id(userId);
+            userDepositTransactionsRepository.save(userDepositTransaction);
         } else {
             UserDeposit userDeposit = new UserDeposit();
             userDeposit.setUser_id(userId);
             userDeposit.setDeposit(cashAmount);
             userRepository.save(userDeposit);
+            UserDepositTransactions userDepositTransaction = new UserDepositTransactions();
+            LocalDate date = LocalDate.now();
+            userDepositTransaction.setTransaction_time(date);
+            userDepositTransaction.setAmount(cashAmount);
+            userDepositTransaction.setUser_id(userId);
+            userDepositTransactionsRepository.save(userDepositTransaction);
         }
 
         Map<String, Integer> acknowledgement = new HashMap<>();

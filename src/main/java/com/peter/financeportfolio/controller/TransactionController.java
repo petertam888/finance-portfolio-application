@@ -28,7 +28,7 @@ public class TransactionController {
     @GetMapping("/{userId}/buy/{stockCode}/{shares}")
     public int buyStock(@PathVariable Long userId,
                         @PathVariable String stockCode,
-                        @PathVariable Integer shares) {
+                        @PathVariable Float shares) {
 
         FetchedStockInfoDTO stockInfo = stockService.fetchStockInformation((stockCode));
 
@@ -53,7 +53,7 @@ public class TransactionController {
                                    @PathVariable Integer day,
                                    @PathVariable String stockCode,
                                    @PathVariable Float stockPrice,
-                                   @PathVariable Integer shares) {
+                                   @PathVariable Float shares) {
 
         LocalDate date = LocalDate.of(year, month, day);
 

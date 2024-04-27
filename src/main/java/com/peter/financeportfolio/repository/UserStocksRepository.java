@@ -19,7 +19,7 @@ public interface UserStocksRepository extends JpaRepository<UserStocks, Long> {
     @Transactional
     @Modifying
     @Query(value = "UPDATE user_stocks SET cost = :newCost, shares = :newShares WHERE user_id = :userId and stock_code = :stockCode", nativeQuery = true)
-    void updateUserStockByUserIdAndStockCode(@Param("userId") Long userId, @Param("newCost") Float newCost, @Param("newShares") Integer newShares, @Param("stockCode") String stockCode);
+    void updateUserStockByUserIdAndStockCode(@Param("userId") Long userId, @Param("newCost") Float newCost, @Param("newShares") Float newShares, @Param("stockCode") String stockCode);
 
     @Query(value = "SELECT * FROM user_stocks WHERE user_id = :userId", nativeQuery = true)
     List<UserStocks> getUserStockByUserId(@Param("userId") Long userId);

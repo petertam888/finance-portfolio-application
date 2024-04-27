@@ -29,7 +29,7 @@ public class TransactionService {
         this.userStocksRepository = userStocksRepository;
     }
 
-    public Map<String, Integer> buyStocksWithCurrentPrice(Long userId, String stockCode, Float stockPrice, Integer shares){
+    public Map<String, Integer> buyStocksWithCurrentPrice(Long userId, String stockCode, Float stockPrice, Float shares){
         Transaction transaction = new Transaction();
         Map<String, Integer> acknowledgement = new HashMap<>();
 
@@ -67,7 +67,7 @@ public class TransactionService {
     }
 
 
-    public Map<String, Integer> addTransactionRecord(LocalDate transactionDate, Long userId, String stockCode, Float stockPrice, Integer shares){
+    public Map<String, Integer> addTransactionRecord(LocalDate transactionDate, Long userId, String stockCode, Float stockPrice, Float shares){
         Transaction transaction = new Transaction();
         Map<String, Integer> acknowledgement = new HashMap<>();
 

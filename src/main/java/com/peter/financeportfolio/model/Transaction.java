@@ -27,7 +27,7 @@ public class Transaction {
     private Float stockPrice;
 
     @Column(name = "shares")
-    private Integer shares;
+    private Float shares;
 
     public Long getTransactionId() {
         return transactionId;
@@ -49,7 +49,7 @@ public class Transaction {
         this.stockPrice = stockPrice;
     }
 
-    public void setShares(Integer shares) {
+    public void setShares(Float shares) {
         this.shares = shares;
     }
 
@@ -73,7 +73,7 @@ public class Transaction {
         return stockPrice;
     }
 
-    public Integer getShares() {
+    public Float getShares() {
         return shares;
     }
 }

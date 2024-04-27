@@ -16,7 +16,7 @@ public class UserStocks {
     @EmbeddedId
     private UserStockCode user_stock_code;
 
-    private Integer shares;
+    private Float shares;
 
     private Float cost;
 
@@ -28,11 +28,11 @@ public class UserStocks {
         this.user_stock_code = user_stock_code;
     }
 
-    public Integer getShares() {
+    public Float getShares() {
         return shares;
     }
 
-    public void setShares(Integer shares) {
+    public void setShares(Float shares) {
         this.shares = shares;
     }
 

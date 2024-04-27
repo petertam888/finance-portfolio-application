@@ -8,7 +8,7 @@ public class UserStockInfoDTO {
 //
 //    private String companyName;
 
-    private Integer shares;
+    private Float shares;
 
 //    public UserStockInfoDTO(String companyName, String stockCode, Float stockPrice, Integer shares){
 //        this.companyName = companyName;
@@ -18,7 +18,7 @@ public class UserStockInfoDTO {
 //
 //    }
 
-    public UserStockInfoDTO(String stockCode, Integer shares, Float stockPrice){
+    public UserStockInfoDTO(String stockCode, Float shares, Float stockPrice){
         this.stockCode = stockCode;
         this.stockPrice = stockPrice;
         this.shares = shares;
@@ -49,11 +49,11 @@ public class UserStockInfoDTO {
 //        this.stockPrice = stockPrice;
 //    }
 
-    public Integer getShares() {
+    public Float getShares() {
         return shares;
     }
 
-    public void setShares(Integer shares) {
+    public void setShares(Float shares) {
         this.shares = shares;
     }
 
