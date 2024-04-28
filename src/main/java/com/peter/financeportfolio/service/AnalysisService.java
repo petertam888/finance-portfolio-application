@@ -36,6 +36,7 @@ public class AnalysisService {
         Float totalSharesOfUserQQQ = userMonthlyInvestmentForQQQAndTQQQRepository.getUserTotalQQQShares(userId);
         Float totalSharesOfUserTQQQ = userMonthlyInvestmentForQQQAndTQQQRepository.getUserTotalTQQQShares(userId);
 
+
         FetchedStockInfoDTO QQQStockInfo = stockService.fetchStockInformation("QQQ");
         Float QQQ_current_price = QQQStockInfo.getStockPrice();
         Float userCurrentQQQAmount = QQQ_current_price*totalSharesOfUserQQQ;
@@ -47,7 +48,6 @@ public class AnalysisService {
         Float userCurrentTQQQAmount = TQQQ_current_price*totalSharesOfUserTQQQ;
         Float userActualTQQQProfit = userCurrentTQQQAmount-totalSumOfUserDeposit;
         Float totalActualTQQQProfit = (float)userActualTQQQProfit/totalSumOfUserDeposit;
-
 
 
         UserProfitInfoDTO userProfitInfoDTO = new UserProfitInfoDTO(totalActualProfit, totalActualQQQProfit, totalActualTQQQProfit);
