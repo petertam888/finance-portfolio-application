@@ -10,6 +10,7 @@ Welcome to the Financial Portfolio Tracker project! This project helps you track
 - **Transaction Records**: Check your transaction history, including details like time, stock code, stock price, and shares.
 - **Add Transaction**: Record new transactions, such as stock purchases or deposits.
 - **Search and Filter**: Filter transaction records by stock code and time range to find specific transactions quickly.
+- **Monthly Portfolio Estimation**: Estimate your monthly investments in QQQ and TQQQ based on your total deposit. This feature helps you compare the potential profits if you invested all your funds in either QQQ or TQQQ.
 
 ## Technologies Used
 
@@ -17,5 +18,6 @@ Welcome to the Financial Portfolio Tracker project! This project helps you track
 - **Backend**: Spring Boot
 - **API**: RESTful API for communication between frontend and backend
 - **Database**: MySQL for storing user data and transaction records
+
 
 
