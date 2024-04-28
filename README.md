@@ -1,5 +1,7 @@
 # Financial Portfolio Tracker
 
+![Project Image](images/project.pngsrc/main/resources/static/HomePage.png)
+
 Welcome to the Financial Portfolio Tracker project! This project helps you track your investments in the stock market effectively. You can manage your portfolio, view transaction records, add new transactions, and more.
 
 ## Features
