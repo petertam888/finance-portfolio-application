@@ -6,10 +6,13 @@ public class UserProfitInfoDTO {
 
     private Float estimatedTQQQProfit;
 
-    public UserProfitInfoDTO(Float accountProfit, Float estimatedQQQProfit, Float estimatedTQQQProfit){
+    private Float yoy;
+
+    public UserProfitInfoDTO(Float accountProfit, Float estimatedQQQProfit, Float estimatedTQQQProfit, Float yoy){
         this.accountProfit = accountProfit;
         this.estimatedQQQProfit = estimatedQQQProfit;
         this.estimatedTQQQProfit = estimatedTQQQProfit;
+        this.yoy = yoy;
 
     }
 
@@ -35,5 +38,13 @@ public class UserProfitInfoDTO {
 
     public void setEstimatedTQQQProfit(Float estimatedTQQQProfit) {
         this.estimatedTQQQProfit = estimatedTQQQProfit;
+    }
+
+    public Float getYoy() {
+        return yoy;
+    }
+
+    public void setYoy(Float yoy) {
+        this.yoy = yoy;
     }
 }

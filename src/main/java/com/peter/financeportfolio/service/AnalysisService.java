@@ -49,8 +49,11 @@ public class AnalysisService {
         Float userActualTQQQProfit = userCurrentTQQQAmount-totalSumOfUserDeposit;
         Float totalActualTQQQProfit = (float)userActualTQQQProfit/totalSumOfUserDeposit;
 
+        Integer daysSinceInitialTransaction = userDepositTransactionsRepository.getDaysSinceInitialTransaction(userId);
+        Float yoy = totalActualProfit/daysSinceInitialTransaction*365;
 
-        UserProfitInfoDTO userProfitInfoDTO = new UserProfitInfoDTO(totalActualProfit, totalActualQQQProfit, totalActualTQQQProfit);
+
+        UserProfitInfoDTO userProfitInfoDTO = new UserProfitInfoDTO(totalActualProfit, totalActualQQQProfit, totalActualTQQQProfit, yoy);
 
         return userProfitInfoDTO;
     }
