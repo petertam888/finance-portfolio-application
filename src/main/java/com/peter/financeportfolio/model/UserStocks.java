@@ -3,9 +3,7 @@ package com.peter.financeportfolio.model;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import com.peter.financeportfolio.model.UserStockCode;
 
 
 
@@ -14,17 +12,17 @@ import com.peter.financeportfolio.model.UserStockCode;
 public class UserStocks {
 
     @EmbeddedId
-    private UserStockCode user_stock_code;
+    private UserStockCodeRelation user_stock_code;
 
     private Float shares;
 
     private Float cost;
 
-    public UserStockCode getUser_stock_code() {
+    public UserStockCodeRelation getUser_stock_code() {
         return user_stock_code;
     }
 
-    public void setUser_stock_code(UserStockCode user_stock_code) {
+    public void setUser_stock_code(UserStockCodeRelation user_stock_code) {
         this.user_stock_code = user_stock_code;
     }
 

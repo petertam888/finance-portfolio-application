@@ -1,7 +1,7 @@
 package com.peter.financeportfolio.service;
 
 import com.peter.financeportfolio.model.Transaction;
-import com.peter.financeportfolio.model.UserStockCode;
+import com.peter.financeportfolio.model.UserStockCodeRelation;
 import com.peter.financeportfolio.model.UserStocks;
 import com.peter.financeportfolio.repository.TransactionRepository;
 import com.peter.financeportfolio.repository.UserRepository;
@@ -52,10 +52,10 @@ public class TransactionService {
             userStocksRepository.updateUserStockByUserIdAndStockCode(userId, updatedCost, stock.getShares()+shares, stockCode);
         }else{
             UserStocks userStocks = new UserStocks();
-            UserStockCode userStockCode = new UserStockCode();
-            userStockCode.setUserId(userId);
-            userStockCode.setStockCode(stockCode);
-            userStocks.setUser_stock_code(userStockCode);
+            UserStockCodeRelation userStockCodeRelation = new UserStockCodeRelation();
+            userStockCodeRelation.setUserId(userId);
+            userStockCodeRelation.setStockCode(stockCode);
+            userStocks.setUser_stock_code(userStockCodeRelation);
             userStocks.setCost(stockPrice);
             userStocks.setShares(shares);
             userStocksRepository.save(userStocks);
@@ -89,10 +89,10 @@ public class TransactionService {
 
         }else{
             UserStocks userStocks = new UserStocks();
-            UserStockCode userStockCode = new UserStockCode();
-            userStockCode.setUserId(userId);
-            userStockCode.setStockCode(stockCode);
-            userStocks.setUser_stock_code(userStockCode);
+            UserStockCodeRelation userStockCodeRelation = new UserStockCodeRelation();
+            userStockCodeRelation.setUserId(userId);
+            userStockCodeRelation.setStockCode(stockCode);
+            userStocks.setUser_stock_code(userStockCodeRelation);
             userStocks.setCost(stockPrice);
             userStocks.setShares(shares);
             userStocksRepository.save(userStocks);

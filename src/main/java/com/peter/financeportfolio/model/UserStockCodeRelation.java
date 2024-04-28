@@ -7,7 +7,7 @@ import jakarta.persistence.Column;
 
 
 @Embeddable
-public class UserStockCode implements Serializable {
+public class UserStockCodeRelation implements Serializable {
     @Column(name = "user_id")
     private Long userId;
 

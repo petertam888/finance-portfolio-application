@@ -5,7 +5,9 @@ import com.peter.financeportfolio.dto.FetchedStockInfoDTO;
 import com.peter.financeportfolio.dto.UserBriefPortfolioDTO;
 import com.peter.financeportfolio.dto.UserStockInfoDTO;
 import com.peter.financeportfolio.model.UserDeposit;
-import com.peter.financeportfolio.model.UserStockCode;
+import com.peter.financeportfolio.model.UserMonthlyInvestmentForQQQAndTQQQRecords;
+import com.peter.financeportfolio.model.UserStockCodeRelation;
+import com.peter.financeportfolio.model.UserYearMonthRelation;
 import com.peter.financeportfolio.model.UserStocks;
 import com.peter.financeportfolio.model.UserDepositTransactions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +26,17 @@ public class UserService {
 
     private final UserDepositTransactionsRepository userDepositTransactionsRepository;
 
+    private final UserMonthlyInvestmentForQQQAndTQQQRepository userMonthlyInvestmentForQQQAndTQQQRepository;
+
     private final StockService stockService;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserStocksRepository userStocksRepository, UserTransactionRepository userTransactionRepository , UserDepositTransactionsRepository userDepositTransactionsRepository,StockService stockService) {
+    public UserService(UserRepository userRepository, UserStocksRepository userStocksRepository, UserTransactionRepository userTransactionRepository , UserDepositTransactionsRepository userDepositTransactionsRepository,StockService stockService, UserMonthlyInvestmentForQQQAndTQQQRepository userMonthlyInvestmentForQQQAndTQQQRepository) {
         this.userRepository = userRepository;
         this.userDepositTransactionsRepository = userDepositTransactionsRepository;
         this.userStocksRepository = userStocksRepository;
         this.userTransactionRepository = userTransactionRepository;
+        this.userMonthlyInvestmentForQQQAndTQQQRepository = userMonthlyInvestmentForQQQAndTQQQRepository;
         this.stockService = stockService;
     }
 
@@ -62,6 +67,29 @@ public class UserService {
             userDepositTransactionsRepository.save(userDepositTransaction);
         }
 
+
+        FetchedStockInfoDTO TQQQStockInfo = stockService.fetchStockInformation("TQQQ");
+        Float TQQQ_buy_price = TQQQStockInfo.getStockPrice();
+        FetchedStockInfoDTO QQQStockInfo = stockService.fetchStockInformation("QQQ");
+        Float QQQ_buy_price = QQQStockInfo.getStockPrice();
+
+        Float TQQQ_shares = (float)cashAmount/TQQQ_buy_price ;
+        Float QQQ_shares = (float)cashAmount/QQQ_buy_price ;
+
+        UserYearMonthRelation userYearMonthRelation = new UserYearMonthRelation();
+        userYearMonthRelation.setUserId(userId);
+        userYearMonthRelation.setYear(LocalDate.now().getYear());
+        userYearMonthRelation.setMonth(LocalDate.now().getMonthValue());
+
+        UserMonthlyInvestmentForQQQAndTQQQRecords userMonthlyInvestmentForQQQAndTQQQRecord = new UserMonthlyInvestmentForQQQAndTQQQRecords();
+        userMonthlyInvestmentForQQQAndTQQQRecord.setQQQ_shares(QQQ_shares);
+        userMonthlyInvestmentForQQQAndTQQQRecord.setTQQQ_shares(TQQQ_shares);
+        userMonthlyInvestmentForQQQAndTQQQRecord.setQQQ_buy_price(QQQ_buy_price);
+        userMonthlyInvestmentForQQQAndTQQQRecord.setTQQQ_buy_price(TQQQ_buy_price);
+        userMonthlyInvestmentForQQQAndTQQQRecord.setUser_year_month_record(userYearMonthRelation);
+        userMonthlyInvestmentForQQQAndTQQQRepository.save(userMonthlyInvestmentForQQQAndTQQQRecord);
+
+
         Map<String, Integer> acknowledgement = new HashMap<>();
 
         acknowledgement.put("statusCode", 200);
@@ -76,8 +104,8 @@ public class UserService {
         List<UserStocks> UserStocksList = userStocksRepository.getUserStockByUserId(userId);
         List<UserStockInfoDTO> StockInfoList = new ArrayList<>();
         for (UserStocks userStocks : UserStocksList) {
-            UserStockCode UserStockCode = userStocks.getUser_stock_code();
-            String stockCode = UserStockCode.getStockCode();
+            UserStockCodeRelation UserStockCodeRelation = userStocks.getUser_stock_code();
+            String stockCode = UserStockCodeRelation.getStockCode();
             FetchedStockInfoDTO stockInfo = stockService.fetchStockInformation(stockCode);
             Float CurrentStockPrice = stockInfo.getStockPrice();
             CurrentStockAmount += userStocks.getShares()*CurrentStockPrice;
