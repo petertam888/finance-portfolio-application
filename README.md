@@ -14,7 +14,7 @@ Welcome to the Financial Portfolio Tracker project! This project helps you track
 ## Technologies Used
 
 - **Frontend**: Next.js, React.js, Tailwind CSS ([Frontend Repository](https://github.com/petertam888/finance-portfolio-application-ui))
-- **Backend**: Spring Boot, MySQL
+- **Backend**: Spring Boot
 - **API**: RESTful API for communication between frontend and backend
 - **Database**: MySQL for storing user data and transaction records
 
