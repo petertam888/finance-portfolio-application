@@ -1,8 +1,8 @@
 # Financial Portfolio Tracker
 
-![Project Image](src/main/resources/static/HomePage.png)
-
 Welcome to the Financial Portfolio Tracker project! This project helps you track your investments in the stock market effectively. You can manage your portfolio, view transaction records, add new transactions, and more.
+
+![Project Image](src/main/resources/static/HomePage.png)
 
 ## Features
 
@@ -13,8 +13,9 @@ Welcome to the Financial Portfolio Tracker project! This project helps you track
 
 ## Technologies Used
 
-- **Frontend**: Next.js, React.js, Tailwind CSS (codes is in [HERE](https://github.com/petertam888/finance-portfolio-application-ui)
+- **Frontend**: Next.js, React.js, Tailwind CSS ([Frontend Repository](https://github.com/petertam888/finance-portfolio-application-ui))
 - **Backend**: Spring Boot, MySQL
 - **API**: RESTful API for communication between frontend and backend
 - **Database**: MySQL for storing user data and transaction records
+
 
