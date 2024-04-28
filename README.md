@@ -16,9 +16,3 @@ Welcome to the Financial Portfolio Tracker project! This project helps you track
 - **API**: RESTful API for communication between frontend and backend
 - **Database**: MySQL for storing user data and transaction records
 
-## Setup Instructions
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/your-username/financial-portfolio.git
