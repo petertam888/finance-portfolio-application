@@ -33,6 +33,8 @@ public class UserController {
     public int addDeposit(@PathVariable Long userId,
                                    @PathVariable Float cashAmount) {
 
+        Map<String, Integer> acknowledgementForAddingMonthlyPerformance = userService.addMonthlyInvestmentRecord(userId);
+
 
         Map<String, Integer> acknowledgement = userService.addCashAmount((userId), (cashAmount));
 
@@ -54,7 +56,6 @@ public class UserController {
 //        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 //        String json = ow.writeValueAsString(userInfo);
 
-        System.out.println("passed");
 //        System.out.println(json);
         return userInfo;
     }
@@ -69,8 +70,6 @@ public class UserController {
 
 //        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 //        String json = ow.writeValueAsString(userInfo);
-        System.out.println(userTransactionRecords);
-        System.out.println("passed");
 //        System.out.println(json);
         return userTransactionRecords;
     }
