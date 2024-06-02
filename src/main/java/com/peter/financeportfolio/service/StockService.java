@@ -52,7 +52,8 @@ public class StockService {
             if (stockPriceElement != null) {
                 // Get the text content from the stock price element
                 String stock_price = stockPriceElement.text().trim();
-                Float stockPrice = Float.valueOf(stock_price);
+                String modified_stock_price = stock_price.replace(",", "");
+                Float stockPrice = Float.valueOf(modified_stock_price);
 
                 FetchedStockInfoDTO stockInfo = new FetchedStockInfoDTO(companyName, stockCode, stockPrice);
 
