@@ -27,7 +27,7 @@ public class StockService {
 
     public FetchedStockInfoDTO fetchStockInformation(String stockCode){
         try {
-            String url = "http://finance.yahoo.com/quote/" + stockCode;
+            String url = "https://www.google.com/search?q=" + stockCode;
 
             Document document = Jsoup.connect(url).get();
 
@@ -35,7 +35,7 @@ public class StockService {
 
 //            Element companyNameDiv = document.select("div.D(ib) h1.Fz\\(18px\\)").first();
             // in html file, the http content is: <h1 class="D(ib) Fz(18px)">{Apple Inc. (AAPL)}</h1>
-            Element companyNameDiv = document.select("#nimbus-app > section > section > section > article > section.container.svelte-1wa6nl7 > div.top.svelte-1wa6nl7 > div > section > h1").first();
+            Element companyNameDiv = document.select("#knowledge-finance-wholepage__entity-summary > div.aviV4d > g-card-section > div > g-card-section > div.OiIFo.knowledge-finance-wholepage__collapse-area-expand > div > div > span").first();
             if (companyNameDiv == null){
                 companyName = stockCode;
             }
@@ -47,7 +47,7 @@ public class StockService {
 
 
             // Extract the stock price from the fin-streamer element
-            Element stockPriceElement = document.select("#nimbus-app > section > section > section > article > section.container.svelte-ezk9pj > div.bottom.svelte-ezk9pj > div.price.svelte-ezk9pj > section > div > section > div.container.svelte-mgkamr > fin-streamer.livePrice.svelte-mgkamr > span").first();
+            Element stockPriceElement = document.select("#knowledge-finance-wholepage__entity-summary > div.aviV4d > g-card-section > div > g-card-section > div.wGt0Bc > div.PZPZlf > span:nth-child(1) > span > span.IsqQVc.NprOob.wT3VGc").first();
 
             if (stockPriceElement != null) {
                 // Get the text content from the stock price element
