@@ -83,7 +83,13 @@ public class TransactionService {
             UserStocks stock = userStocksOptional.get();
             Float totalCost = stock.getCost()*stock.getShares();
             Float transactionCost = stockPrice*shares;
-            Float updatedCost = (totalCost+transactionCost)/(shares+stock.getShares());
+            Float updatedCost;
+            if (shares+stock.getShares()==0){
+                updatedCost = (totalCost + transactionCost);
+            }
+            else{
+                updatedCost = (totalCost+transactionCost)/(shares+stock.getShares());
+            }
             userStocksRepository.updateUserStockByUserIdAndStockCode(userId, updatedCost, stock.getShares()+shares, stockCode);
             userRepository.updateUserDepositByUserIdAndTransactionCost(userId, transactionCost);
 

@@ -187,6 +187,9 @@ public class UserService {
         List<UserStocks> UserStocksList = userStocksRepository.getUserStockByUserId(userId);
         List<UserStockInfoDTO> StockInfoList = new ArrayList<>();
         for (UserStocks userStocks : UserStocksList) {
+            if (userStocks.getShares() == 0){
+                continue;
+            }
             UserStockCodeRelation UserStockCodeRelation = userStocks.getUser_stock_code();
             String stockCode = UserStockCodeRelation.getStockCode();
             FetchedStockInfoDTO stockInfo = stockService.fetchStockInformation(stockCode);
