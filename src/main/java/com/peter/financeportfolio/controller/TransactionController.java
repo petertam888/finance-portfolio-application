@@ -1,5 +1,5 @@
 package com.peter.financeportfolio.controller;
-
+import com.peter.financeportfolio.model.DividendDetails;
 import com.peter.financeportfolio.service.StockService;
 import com.peter.financeportfolio.dto.FetchedStockInfoDTO;
 import com.peter.financeportfolio.service.TransactionService;
@@ -17,6 +17,7 @@ import java.util.Map;
 public class TransactionController {
     private final TransactionService transactionService;
     private final StockService stockService;
+
 
 
     @Autowired
@@ -65,6 +66,32 @@ public class TransactionController {
 
 
         return 500;
+    }
+
+    @PostMapping("/{userId}/dividend_record/{year}_{month}_{day}/{stockCode}")
+    public int addDividendRecord(@PathVariable Long userId,
+                                 @PathVariable Integer year,
+                                 @PathVariable Integer month,
+                                 @PathVariable Integer day,
+                                 @PathVariable String stockCode,
+                                 @RequestBody(required = false) Map<String, Float> dividendDetails){
+
+        Float dividendByShares = dividendDetails != null ? dividendDetails.get("dividendByShares") : null;
+        Float dividendByCash = dividendDetails != null ? dividendDetails.get("dividendByCash") : null;
+
+        LocalDate date = LocalDate.of(year, month, day);
+        DividendDetails dividendDetailObject = new DividendDetails();
+
+        if (dividendByShares != null) {
+            dividendDetailObject.setDividendByShares(dividendByShares);
+        }
+        if (dividendByCash != null) {
+            dividendDetailObject.setDividendByCash(dividendByCash);
+        }
+
+        Map<String, Integer> acknowledgement = transactionService.addDividendRecord(date, userId, stockCode, dividendDetailObject);
+
+        return acknowledgement.getOrDefault("statusCode", 500);
     }
 
 

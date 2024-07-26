@@ -45,6 +45,10 @@ public class Transaction {
         this.stockCode = stockCode;
     }
 
+    public String getStockCode() {
+        return stockCode;
+    }
+
     public void setStockPrice(Float stockPrice) {
         this.stockPrice = stockPrice;
     }
@@ -65,9 +69,6 @@ public class Transaction {
         return userId;
     }
 
-    public String getStockCode() {
-        return stockCode;
-    }
 
     public Float getStockPrice() {
         return stockPrice;

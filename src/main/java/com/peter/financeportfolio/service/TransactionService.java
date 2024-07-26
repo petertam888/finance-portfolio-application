@@ -1,8 +1,7 @@
 package com.peter.financeportfolio.service;
 
-import com.peter.financeportfolio.model.Transaction;
-import com.peter.financeportfolio.model.UserStockCodeRelation;
-import com.peter.financeportfolio.model.UserStocks;
+import com.peter.financeportfolio.model.*;
+import com.peter.financeportfolio.repository.DividendRepository;
 import com.peter.financeportfolio.repository.TransactionRepository;
 import com.peter.financeportfolio.repository.UserRepository;
 import com.peter.financeportfolio.repository.UserStocksRepository;
@@ -22,11 +21,14 @@ public class TransactionService {
 
     private final UserRepository userRepository;
 
+    private final DividendRepository dividendRepository;
+
     @Autowired
-    public TransactionService(TransactionRepository transactionRepository, UserStocksRepository userStocksRepository, UserRepository userRepository) {
+    public TransactionService(TransactionRepository transactionRepository, UserStocksRepository userStocksRepository, UserRepository userRepository, DividendRepository dividendRepository) {
         this.userRepository = userRepository;
         this.transactionRepository = transactionRepository;
         this.userStocksRepository = userStocksRepository;
+        this.dividendRepository = dividendRepository;
     }
 
     public Map<String, Integer> buyStocksWithCurrentPrice(Long userId, String stockCode, Float stockPrice, Float shares){
@@ -109,6 +111,48 @@ public class TransactionService {
 
         return acknowledgement;
     }
+
+    public Map<String, Integer> addDividendRecord(LocalDate transactionDate, Long userId, String stockCode, DividendDetails dividendDetails){
+
+        UserStocksDividend userStocksDividend = new UserStocksDividend();
+        Map<String, Integer> acknowledgement = new HashMap<>();
+
+        userStocksDividend.setTime(transactionDate);
+        userStocksDividend.setUserId(userId);
+        userStocksDividend.setStockCode(stockCode);
+        Float dividendByShares = dividendDetails.getDividendByShares();
+        Float dividendByCash = dividendDetails.getDividendByCash();
+        userStocksDividend.setDividendByShares(dividendByShares);
+        userStocksDividend.setDividendByCash(dividendByCash);
+
+        dividendRepository.save(userStocksDividend);
+
+        Optional<UserStocks> userStocksOptional = userStocksRepository.getUserStockByUserIdAndStockCode(userId, stockCode);
+
+        UserStocks stock = userStocksOptional.get();
+        if (dividendByShares != null){
+            Float totalCost = stock.getCost()*stock.getShares();
+            Float latest_shares = stock.getShares() + dividendByShares;
+            Float updatedCost = (totalCost)/(latest_shares);
+
+            userStocksRepository.updateUserStockByUserIdAndStockCode(userId, updatedCost, latest_shares, stockCode);
+        }
+        else{
+            Float totalCost = stock.getCost()*stock.getShares();
+            Float shares = stock.getShares();
+            Float updatedCost = (totalCost-dividendByCash)/(shares);
+            UserDeposit userDepositOptional = userRepository.getUserDepositByUserId(userId);
+            Float userLatestDeposit =  dividendByCash + userDepositOptional.getDeposit();
+            userRepository.updateUserDepositByUserId(userId, userLatestDeposit);
+            userStocksRepository.updateUserStockByUserIdAndStockCode(userId, updatedCost, shares, stockCode);
+        }
+        acknowledgement.put("statusCode", 200);
+
+
+        return acknowledgement;
+    }
+
+
 
 
 
