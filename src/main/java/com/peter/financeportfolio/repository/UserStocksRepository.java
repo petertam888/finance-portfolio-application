@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface UserStocksRepository extends JpaRepository<UserStocks, Long> {
     @Query(value = "SELECT * FROM user_stocks WHERE user_id = :userId and stock_code = :stockCode", nativeQuery = true)
-    Optional<UserStocks> getUserStockByUserIdAndStockCode(@Param("userId") Long userId, @Param("stockCode") String stockCode);
+    UserStocks getUserStockByUserIdAndStockCode(@Param("userId") Long userId, @Param("stockCode") String stockCode);
 
     @Transactional
     @Modifying

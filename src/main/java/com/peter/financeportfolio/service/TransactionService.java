@@ -45,13 +45,12 @@ public class TransactionService {
 
         transactionRepository.save(transaction);
 
-        Optional<UserStocks> userStocksOptional = userStocksRepository.getUserStockByUserIdAndStockCode(userId, stockCode);
-        if (userStocksOptional.isPresent()){
-            UserStocks stock = userStocksOptional.get();
-            Float totalCost = stock.getCost()*stock.getShares();
+        UserStocks userStocksOptional = userStocksRepository.getUserStockByUserIdAndStockCode(userId, stockCode);
+        if (userStocksOptional.getUser_stock_code() != null){
+            Float totalCost = userStocksOptional.getCost()*userStocksOptional.getShares();
             Float transactionCost = stockPrice*shares;
-            Float updatedCost = (totalCost+transactionCost)/(shares+stock.getShares());
-            userStocksRepository.updateUserStockByUserIdAndStockCode(userId, updatedCost, stock.getShares()+shares, stockCode);
+            Float updatedCost = (totalCost+transactionCost)/(shares+userStocksOptional.getShares());
+            userStocksRepository.updateUserStockByUserIdAndStockCode(userId, updatedCost, userStocksOptional.getShares()+shares, stockCode);
         }else{
             UserStocks userStocks = new UserStocks();
             UserStockCodeRelation userStockCodeRelation = new UserStockCodeRelation();
@@ -80,19 +79,18 @@ public class TransactionService {
         transaction.setShares(shares);
 
         transactionRepository.save(transaction);
-        Optional<UserStocks> userStocksOptional = userStocksRepository.getUserStockByUserIdAndStockCode(userId, stockCode);
-        if (userStocksOptional.isPresent()){
-            UserStocks stock = userStocksOptional.get();
-            Float totalCost = stock.getCost()*stock.getShares();
+        UserStocks userStocksOptional = userStocksRepository.getUserStockByUserIdAndStockCode(userId, stockCode);
+        if (userStocksOptional.getUser_stock_code() != null){
+            Float totalCost = userStocksOptional.getCost()*userStocksOptional.getShares();
             Float transactionCost = stockPrice*shares;
             Float updatedCost;
-            if (shares+stock.getShares()==0){
+            if (shares+userStocksOptional.getShares()==0){
                 updatedCost = (totalCost + transactionCost);
             }
             else{
-                updatedCost = (totalCost+transactionCost)/(shares+stock.getShares());
+                updatedCost = (totalCost+transactionCost)/(shares+userStocksOptional.getShares());
             }
-            userStocksRepository.updateUserStockByUserIdAndStockCode(userId, updatedCost, stock.getShares()+shares, stockCode);
+            userStocksRepository.updateUserStockByUserIdAndStockCode(userId, updatedCost, userStocksOptional.getShares()+shares, stockCode);
             userRepository.updateUserDepositByUserIdAndTransactionCost(userId, transactionCost);
 
         }else{
@@ -113,7 +111,7 @@ public class TransactionService {
     }
 
     public Map<String, Integer> addDividendRecord(LocalDate transactionDate, Long userId, String stockCode, DividendDetails dividendDetails){
-
+        System.out.println("Hi");
         UserStocksDividend userStocksDividend = new UserStocksDividend();
         Map<String, Integer> acknowledgement = new HashMap<>();
 
@@ -127,19 +125,20 @@ public class TransactionService {
 
         dividendRepository.save(userStocksDividend);
 
-        Optional<UserStocks> userStocksOptional = userStocksRepository.getUserStockByUserIdAndStockCode(userId, stockCode);
-
-        UserStocks stock = userStocksOptional.get();
+        UserStocks userStocksOptional = userStocksRepository.getUserStockByUserIdAndStockCode(userId, stockCode);
+        System.out.println(userId);
+        System.out.println(stockCode);
+        System.out.println(userStocksOptional);
         if (dividendByShares != null){
-            Float totalCost = stock.getCost()*stock.getShares();
-            Float latest_shares = stock.getShares() + dividendByShares;
+            Float totalCost = userStocksOptional.getCost()*userStocksOptional.getShares();
+            Float latest_shares = userStocksOptional.getShares() + dividendByShares;
             Float updatedCost = (totalCost)/(latest_shares);
 
             userStocksRepository.updateUserStockByUserIdAndStockCode(userId, updatedCost, latest_shares, stockCode);
         }
         else{
-            Float totalCost = stock.getCost()*stock.getShares();
-            Float shares = stock.getShares();
+            Float totalCost = userStocksOptional.getCost()*userStocksOptional.getShares();
+            Float shares = userStocksOptional.getShares();
             Float updatedCost = (totalCost-dividendByCash)/(shares);
             UserDeposit userDepositOptional = userRepository.getUserDepositByUserId(userId);
             Float userLatestDeposit =  dividendByCash + userDepositOptional.getDeposit();
