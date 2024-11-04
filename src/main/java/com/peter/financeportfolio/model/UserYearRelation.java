@@ -11,7 +11,7 @@ public class UserYearRelation implements Serializable {
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "year")
+    @Column(name = "\"year\"")
     private Integer year;
 
     public Long getUserId() {

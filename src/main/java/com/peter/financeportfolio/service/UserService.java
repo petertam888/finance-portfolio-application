@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.time.LocalDate;
 import java.util.*;
 
@@ -27,6 +30,8 @@ public class UserService {
 
     private final StockService stockService;
 
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
     @Autowired
     public UserService(UserRepository userRepository, UserStocksRepository userStocksRepository, UserTransactionRepository userTransactionRepository , UserDepositTransactionsRepository userDepositTransactionsRepository,StockService stockService, UserMonthlyInvestmentForQQQAndTQQQRepository userMonthlyInvestmentForQQQAndTQQQRepository, UserMonthlyPerformanceRecordsRepository userMonthlyPerformanceRecordsRepository) {
         this.userRepository = userRepository;
@@ -40,7 +45,8 @@ public class UserService {
 
     public Map<String, Integer> addCashAmount(Long userId, Float cashAmount){
 
-
+        logger.info("Adding cash amount {} for user {}", cashAmount, userId);
+        
         UserDeposit userDepositOptional = userRepository.getUserDepositByUserId(userId);
 
         if (userDepositOptional != null) {

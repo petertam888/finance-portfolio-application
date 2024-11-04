@@ -11,10 +11,10 @@ public class UserYearMonthRelation implements Serializable {
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "year")
+    @Column(name = "\"year\"")
     private Integer year;
 
-    @Column(name = "month")
+    @Column(name = "\"month\"")
     private Integer month;
 
 
