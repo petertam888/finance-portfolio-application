@@ -27,7 +27,7 @@ public class StockService {
 
     public FetchedStockInfoDTO fetchStockInformation(String stockCode){
         try {
-            String url = "https://www.google.com/search?q=" + stockCode;
+            String url = "https://www.google.com/search?q=NASDAQ:" + stockCode;
 
             Document document = Jsoup.connect(url).get();
 
