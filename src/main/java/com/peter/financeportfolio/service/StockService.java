@@ -33,24 +33,19 @@ public class StockService {
 
             String companyName;
 
-//            Element companyNameDiv = document.select("div.D(ib) h1.Fz\\(18px\\)").first();
-            // in html file, the http content is: <h1 class="D(ib) Fz(18px)">{Apple Inc. (AAPL)}</h1>
             Element companyNameDiv = document.select("#knowledge-finance-wholepage__entity-summary > div.aviV4d > g-card-section > div > g-card-section > div.OiIFo.knowledge-finance-wholepage__collapse-area-expand > div > div > span").first();
             if (companyNameDiv == null){
                 companyName = stockCode;
             }
             else {
 
-                // Get the text content from the stock price elementg
                 companyName = companyNameDiv.text().trim();
             }
 
 
-            // Extract the stock price from the fin-streamer element
             Element stockPriceElement = document.select("#knowledge-finance-wholepage__entity-summary > div.aviV4d > g-card-section > div > g-card-section > div.wGt0Bc > div.PZPZlf > span:nth-child(1) > span > span.IsqQVc.NprOob.wT3VGc").first();
 
             if (stockPriceElement != null) {
-                // Get the text content from the stock price element
                 String stock_price = stockPriceElement.text().trim();
                 String modified_stock_price = stock_price.replace(",", "");
                 Float stockPrice = Float.valueOf(modified_stock_price);
@@ -61,7 +56,37 @@ public class StockService {
 
 
             } else {
-                System.out.println("Unable to find the stock price element. Check the HTML structure.");
+                String new_url = "https://www.google.com/search?q=" + stockCode;
+
+                Document new_document = Jsoup.connect(new_url).get();
+
+
+                String new_companyName;
+
+                Element new_companyNameDiv = new_document.select("#knowledge-finance-wholepage__entity-summary > div.aviV4d > g-card-section > div > g-card-section > div.OiIFo.knowledge-finance-wholepage__collapse-area-expand > div > div > span").first();
+                if (new_companyNameDiv == null){
+                    new_companyName = stockCode;
+                }
+                else {
+
+                    new_companyName = new_companyNameDiv.text().trim();
+                }
+
+
+                Element new_stockPriceElement = new_document.select("#knowledge-finance-wholepage__entity-summary > div.aviV4d > g-card-section > div > g-card-section > div.wGt0Bc > div.PZPZlf > span:nth-child(1) > span > span.IsqQVc.NprOob.wT3VGc").first();
+
+                if (new_stockPriceElement != null) {
+                    String stock_price = new_stockPriceElement.text().trim();
+                    String modified_stock_price = stock_price.replace(",", "");
+                    Float stockPrice = Float.valueOf(modified_stock_price);
+
+                    FetchedStockInfoDTO stockInfo = new FetchedStockInfoDTO(new_companyName, stockCode, stockPrice);
+
+                    return stockInfo;
+                }
+                else {
+                    System.out.println("Unable to find the stock price element. Check the HTML structure.");
+                }
             }
 
 
